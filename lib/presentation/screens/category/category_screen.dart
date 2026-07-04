@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/core/routes/app_routes.dart';
 import 'package:news_app/presentation/bloc/news/news_bloc.dart';
 import 'package:news_app/presentation/bloc/news/news_event.dart';
 import 'package:news_app/presentation/bloc/news/news_state.dart';
@@ -108,7 +109,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   return ArticleCard(
                     article: article,
                     onTap: () {
-                      // article screen navigation
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.article,
+                        arguments: article,
+                      );
                     },
                   );
                 },

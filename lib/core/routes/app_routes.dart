@@ -6,6 +6,7 @@ import 'package:news_app/core/network/dio_client.dart';
 import 'package:news_app/core/network/network_info.dart';
 import 'package:news_app/data/datasource/remote/news_remote_datasource.dart';
 import 'package:news_app/data/repositories/news_repository_impl.dart';
+import 'package:news_app/domain/entities/article.dart';
 import 'package:news_app/presentation/bloc/news/news_bloc.dart';
 import 'package:news_app/presentation/screens/article/article_screen.dart';
 import 'package:news_app/presentation/screens/category/category_screen.dart';
@@ -44,8 +45,10 @@ class AppRoutes {
         );
 
       case article:
+        final article = settings.arguments as Article;
+
         return MaterialPageRoute(
-          builder: (_) => const ArticleScreen(),
+          builder: (_) => ArticleScreen(article: article),
         );
 
       default:
