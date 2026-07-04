@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'core/theme/app_theme.dart';
+import 'core/routes/app_routes.dart';
 
 class NewsApp extends StatelessWidget {
   const NewsApp({super.key});
@@ -7,13 +7,13 @@ class NewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'News App',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: Scaffold(
-        appBar: AppBar(title: const Text('News App')),
-        body: const Center(child: Text('Setup Complete')),
+      title: 'News App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      initialRoute: AppRoutes.home,
+      onGenerateRoute: AppRoutes.generateRoute,
     );
   }
 }
