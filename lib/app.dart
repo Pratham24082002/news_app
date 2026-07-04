@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'core/theme/app_theme.dart';
 
 class NewsApp extends StatelessWidget {
   const NewsApp({super.key});
@@ -8,10 +9,10 @@ class NewsApp extends StatelessWidget {
     return MaterialApp(
       title: 'News App',
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
       home: Scaffold(
-        body: Center(
-          child: Text('News App'),
-        ),
+        appBar: AppBar(title: const Text('News App')),
+        body: const Center(child: Text('Setup Complete')),
       ),
     );
   }
