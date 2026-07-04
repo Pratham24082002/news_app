@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:news_app/core/constants/api_constants.dart';
 
+import 'app_interceptor.dart';
+
 class DioClient {
   late final Dio dio;
 
@@ -15,5 +17,6 @@ class DioClient {
         },
       ),
     );
+    dio.interceptors.add(AppInterceptor());
   }
 }
