@@ -14,6 +14,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     on<FetchNews>(_onFetchNews);
     on<LoadMoreNews>(_onLoadMoreNews);
     on<RefreshNews>(_onRefreshNews);
+    on<SearchNews>(_onSearchNews);
   }
 
   Future<void> _onFetchNews(FetchNews event, Emitter<NewsState> emit) async {
@@ -95,6 +96,34 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
           hasReachedMax: articles.length < ApiConstants.pageSize,
           currentPage: 1,
           category: event.category,
+        ),
+      );
+    } on NoInternetException catch (e) {
+      emit(NewsError(e.message));
+    } on ServerException catch (e) {
+      emit(NewsError(e.message));
+    } catch (e) {
+      emit(NewsError(e.toString()));
+    }
+  }
+
+  Future<void> _onSearchNews(SearchNews event, Emitter<NewsState> emit) async {
+    if (event.query.trim().isEmpty) {
+      emit(const NewsInitial());
+      return;
+    }
+
+    emit(const NewsLoading());
+
+    try {
+      final articles = await repository.searchNews(query: event.query, page: 1);
+
+      emit(
+        NewsLoaded(
+          articles: articles,
+          currentPage: 1,
+          hasReachedMax: articles.length < ApiConstants.pageSize,
+          category: '',
         ),
       );
     } on NoInternetException catch (e) {

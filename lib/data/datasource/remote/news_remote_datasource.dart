@@ -8,6 +8,12 @@ abstract class NewsRemoteDataSource {
     required String category,
     required int page,
   });
+
+  Future<List<ArticleModel>> searchNews({
+    required String query,
+    required int page,
+  });
+
 }
 
 class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
@@ -47,4 +53,43 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
       throw ServerException(e.message ?? 'Something went wrong');
     }
   }
+
+  @override
+  Future<List<ArticleModel>> searchNews({
+    required String query,
+    required int page,
+  }) async {
+    try {
+      final response = await dio.get(
+        ApiConstants.everything,
+        queryParameters: {
+          'q': query,
+          'page': page,
+          'pageSize': ApiConstants.pageSize,
+          'sortBy': 'publishedAt',
+          'language': 'en',
+          'apiKey': ApiConstants.apiKey,
+        },
+      );
+
+      if (response.statusCode == 200 &&
+          response.data['status'] == 'ok') {
+        final articles = response.data['articles'] as List;
+
+        return articles
+            .map((e) => ArticleModel.fromJson(e))
+            .toList();
+      }
+
+      throw ServerException(
+        response.data['message'] ??
+            'Failed to search news',
+      );
+    } on DioException catch (e) {
+      throw ServerException(
+        e.message ?? 'Something went wrong',
+      );
+    }
+  }
+
 }

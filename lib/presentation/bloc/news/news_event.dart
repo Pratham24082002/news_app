@@ -33,3 +33,14 @@ class RefreshNews extends NewsEvent {
   @override
   List<Object?> get props => [category];
 }
+
+class SearchNews extends NewsEvent {
+  final String query;
+
+  const SearchNews({
+    required this.query,
+  });
+
+  @override
+  List<Object> get props => [query];
+}

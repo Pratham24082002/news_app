@@ -24,4 +24,21 @@ class NewsRepositoryImpl implements NewsRepository {
       throw NoInternetException('No internet connection');
     }
   }
+
+  @override
+  Future<List<Article>> searchNews({
+    required String query,
+    required int page,
+  }) async {
+    if (!await networkInfo.isConnected) {
+      throw NoInternetException('No internet connection');
+    }
+
+    return await remoteDataSource.searchNews(
+      query: query,
+      page: page,
+    );
+  }
+
+
 }

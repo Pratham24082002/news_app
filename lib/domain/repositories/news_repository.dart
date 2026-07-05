@@ -5,4 +5,10 @@ abstract class NewsRepository {
     required String category,
     required int page,
   });
+
+  Future<List<Article>> searchNews({
+    required String query,
+    required int page,
+  });
+
 }

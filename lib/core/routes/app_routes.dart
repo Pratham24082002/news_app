@@ -11,14 +11,30 @@ import 'package:news_app/presentation/bloc/news/news_bloc.dart';
 import 'package:news_app/presentation/screens/article/article_screen.dart';
 import 'package:news_app/presentation/screens/category/category_screen.dart';
 import 'package:news_app/presentation/screens/home/home_screen.dart';
+import 'package:news_app/presentation/screens/search/search_screen.dart';
 import 'package:news_app/presentation/screens/splash/splash_screen.dart';
 
 class AppRoutes {
+  static const String splash = '/splash';
   static const String home = '/';
   static const String category = '/category';
   static const String article = '/article';
-  static const String splash = '/splash';
+  static const String search = '/search';
 
+  static final Dio _dio = DioClient.createDio();
+  static final Connectivity _connectivity = Connectivity();
+
+  static final NetworkInfo _networkInfo =
+  NetworkInfoImpl(_connectivity);
+
+  static final NewsRemoteDataSource _remoteDataSource =
+  NewsRemoteDataSourceImpl(_dio);
+
+  static final NewsRepositoryImpl _repository =
+  NewsRepositoryImpl(
+    remoteDataSource: _remoteDataSource,
+    networkInfo: _networkInfo,
+  );
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -30,25 +46,16 @@ class AppRoutes {
 
       case home:
         return MaterialPageRoute(
-          builder: (_) => HomeScreen(),
+          builder: (_) =>  HomeScreen(),
         );
 
       case category:
-        final categoryData = settings.arguments as Map<String, dynamic>;
-        final dio = DioClient.createDio();
-        final connectivity = Connectivity();
-
-        final networkInfo = NetworkInfoImpl(connectivity);
-        final remoteDataSource = NewsRemoteDataSourceImpl(dio);
-
-        final repository = NewsRepositoryImpl(
-          remoteDataSource: remoteDataSource,
-          networkInfo: networkInfo,
-        );
+        final categoryData =
+        settings.arguments as Map<String, dynamic>;
 
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) => NewsBloc(repository: repository),
+            create: (_) => NewsBloc(repository: _repository),
             child: CategoryScreen(category: categoryData),
           ),
         );
@@ -58,6 +65,14 @@ class AppRoutes {
 
         return MaterialPageRoute(
           builder: (_) => ArticleScreen(article: article),
+        );
+
+      case search:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => NewsBloc(repository: _repository),
+            child: SearchScreen(),
+          ),
         );
 
       default:
