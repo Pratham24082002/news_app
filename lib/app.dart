@@ -12,7 +12,7 @@ class NewsApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRoutes.generateRoute,
     );
   }

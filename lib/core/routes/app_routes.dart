@@ -11,14 +11,23 @@ import 'package:news_app/presentation/bloc/news/news_bloc.dart';
 import 'package:news_app/presentation/screens/article/article_screen.dart';
 import 'package:news_app/presentation/screens/category/category_screen.dart';
 import 'package:news_app/presentation/screens/home/home_screen.dart';
+import 'package:news_app/presentation/screens/splash/splash_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
   static const String category = '/category';
   static const String article = '/article';
+  static const String splash = '/splash';
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
+      case splash:
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
+
       case home:
         return MaterialPageRoute(
           builder: (_) => HomeScreen(),
